@@ -65,7 +65,6 @@ nginx_stream_build_config() {
     UDP_PROXY_PORT_MAP="$UDP_PROXY_PORT_MAP"
     UDP_PROXY_UPSTREAM_PORTS="$UDP_PROXY_UPSTREAM_PORTS")
 
-  local DOKKU_SCALE_FILE="$DOKKU_ROOT/$APP/DOKKU_SCALE"
   while read -r line || [[ -n "$line" ]]; do
     [[ "$line" =~ ^#.* ]] && continue
     line="$(strip_inline_comments "$line")"
@@ -76,7 +75,7 @@ nginx_stream_build_config() {
     UPP_PROC_TYPE="${PROC_TYPE^^}"
     UPP_PROC_TYPE="${UPP_PROC_TYPE//-/_}"
     SIGIL_PARAMS+=( "DOKKU_APP_${UPP_PROC_TYPE}_LISTENERS=$LISTENERS" )
-  done <"$DOKKU_SCALE_FILE"
+  done < <(plugn trigger ps-current-scale "$APP")
 
   sigil "${SIGIL_PARAMS[@]}" | cat -s >"$STREAM_CONF"
   sudo /bin/mv "$STREAM_CONF" "/etc/nginx/app-stream/$APP.conf"
