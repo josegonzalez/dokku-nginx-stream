@@ -2,8 +2,6 @@
 
 **Note:** Alpha software. Pull Requests are welcome
 
-**Note:** Only one tcp/udp port per app is supported
-
 Dokku NGINX Stream gives the ability to open up tcp/udp ports
 to the outside world. This can be usefull when your application
 speaks more than http.
