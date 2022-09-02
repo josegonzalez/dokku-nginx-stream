@@ -29,7 +29,7 @@ dokku ps:rebuild
 a rebuild or deploy.
 
 More information on proxy configuration can be found here:
-[dokky port management](http://dokku.viewdocs.io/dokku/networking/port-management/)
+[dokku port management](http://dokku.viewdocs.io/dokku/networking/port-management/)
 
 ## Technical
 
