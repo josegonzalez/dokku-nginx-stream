@@ -13,7 +13,7 @@ speaks more than http.
 ## Install and usage
 
 ```sh
-# dokku 0.5+
+# dokku 0.25.0+
 $ sudo dokku plugin:install https://github.com/josegonzalez/dokku-nginx-stream.git
 ```
 ## Usage
