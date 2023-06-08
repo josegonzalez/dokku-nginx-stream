@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+plugin-uninstall() {
+  local NGINX_CONF="/etc/nginx/nginx.conf"
+
+sed -ri '/stream /,/.*\}/d' "$NGINX_CONF"
+}
+
+plugin-uninstall "$@"
