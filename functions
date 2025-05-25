@@ -15,7 +15,7 @@ nginx_stream_build_config() {
     exit 0
   fi
 
-  local DOKKU_PROXY_PORT_MAP=$(config_get "$APP" DOKKU_PROXY_PORT_MAP)
+  local DOKKU_PROXY_PORT_MAP=$(plugn trigger ports-get "$APP")
 
   local PORT_MAP TCP_PROXY_PORT_MAP UDP_PROXY_PORT_MAP
   for PORT_MAP in $DOKKU_PROXY_PORT_MAP; do
