@@ -4,6 +4,7 @@ set -eo pipefail
 source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
 source "$PLUGIN_AVAILABLE_PATH/config/functions"
 source "$PLUGIN_AVAILABLE_PATH/nginx-vhosts/functions"
+source "$PLUGIN_CORE_AVAILABLE_PATH/nginx-vhosts/internal-functions"
 
 nginx_stream_build_config() {
   local APP="$1"
@@ -57,13 +58,17 @@ nginx_stream_build_config() {
 
   local STREAM_BUILD_CONFIG_TMP_WORK_DIR=$(mktemp -d "/tmp/dokku-${DOKKU_PID}-${FUNCNAME[0]}.XXXXXX")
   local STREAM_CONF=$(mktemp --tmpdir="${STREAM_BUILD_CONFIG_TMP_WORK_DIR}" "stream.conf.XXXXXX")
+  local NGINX_BIND_ADDRESS_IP4="$(fn-nginx-computed-bind-address-ipv4 "$APP")"
+  local NGINX_BIND_ADDRESS_IP6="$(fn-nginx-computed-bind-address-ipv6 "$APP")"
 
   local SIGIL_PARAMS=(-f "$STREAM_TEMPLATE" APP="$APP"
     DOKKU_APP_LISTEN_IP="$DOKKU_APP_LISTEN_IP"
     TCP_PROXY_PORT_MAP="$TCP_PROXY_PORT_MAP"
     TCP_PROXY_UPSTREAM_PORTS="$TCP_PROXY_UPSTREAM_PORTS"
     UDP_PROXY_PORT_MAP="$UDP_PROXY_PORT_MAP"
-    UDP_PROXY_UPSTREAM_PORTS="$UDP_PROXY_UPSTREAM_PORTS")
+    UDP_PROXY_UPSTREAM_PORTS="$UDP_PROXY_UPSTREAM_PORTS"
+    NGINX_BIND_ADDRESS_IP4="$NGINX_BIND_ADDRESS_IP4"
+    NGINX_BIND_ADDRESS_IP6="$NGINX_BIND_ADDRESS_IP6")
 
   while read -r line || [[ -n "$line" ]]; do
     [[ "$line" =~ ^#.* ]] && continue
